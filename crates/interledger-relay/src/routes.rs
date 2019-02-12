@@ -44,7 +44,7 @@ impl<T> Route<T> {
 }
 
 #[cfg(test)]
-mod routing_table_tests {
+mod test_routing_table {
     use super::*;
 
     #[test]

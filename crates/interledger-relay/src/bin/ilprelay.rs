@@ -2,7 +2,7 @@ use futures::Future;
 use hyper::{Server, Uri};
 //use hyper::service::Service;
 
-use ilp_connector_relay::{Receiver, Relay, Route};
+use ilp_connector_relay::{Receiver, Relay, Route, Service};
 
 fn main() {
     println!("ilp relay start");
@@ -26,10 +26,11 @@ fn main() {
         //.serve(hyper::service::make_service_fn(|socket: &TcpStream| Ok(&relay)))
         //.serve(|| -> FutureResult<Arc<Relay>, !> {
         .serve(move || {
+            let receiver = receiver.clone();
             //let relay = relay.clone();
             ////let relay = Arc::clone(&relay);
             hyper::service::service_fn(move |req| {
-                relay.call(req)
+                receiver.call(req)
             })
         })
         .map_err(|error| {
