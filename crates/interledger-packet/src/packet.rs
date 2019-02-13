@@ -145,6 +145,11 @@ impl Prepare {
     }
 
     #[inline]
+    pub fn as_bytes(&self) -> &[u8] {
+        self.buffer.as_ref()
+    }
+
+    #[inline]
     pub fn amount(&self) -> u64 {
         self.amount
     }
@@ -266,6 +271,11 @@ impl Fulfill {
         })
     }
 
+    #[inline]
+    pub fn as_bytes(&self) -> &[u8] {
+        self.buffer.as_ref()
+    }
+
     /// The returned value always has a length of 32.
     pub fn fulfillment(&self) -> &[u8] {
         let begin = self.content_offset;
@@ -350,12 +360,19 @@ impl Reject {
     }
 
     #[inline]
+    pub fn as_bytes(&self) -> &[u8] {
+        self.buffer.as_ref()
+    }
+
+    #[inline]
     pub fn code(&self) -> ErrorCode {
         self.code
     }
 
     pub fn triggered_by(&self) -> &[u8] {
-        (&self.buffer[self.triggered_by_offset..]).peek_var_octet_string().unwrap()
+        (&self.buffer[self.triggered_by_offset..])
+            .peek_var_octet_string()
+            .unwrap()
     }
 
     pub fn message(&self) -> &[u8] {
