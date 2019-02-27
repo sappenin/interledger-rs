@@ -18,6 +18,8 @@ const ERROR_CODE_LEN: usize = 3;
 
 static INTERLEDGER_TIMESTAMP_FORMAT: &'static str = "%Y%m%d%H%M%S%3f";
 
+// TODO implement a more descriptive Debug for Prepare/Fulfill/Reject, or maybe Display
+
 // TODO TryFrom([u8])
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[repr(u8)]

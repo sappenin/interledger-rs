@@ -1,3 +1,5 @@
+use std::fmt;
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ErrorCode([u8; 3]);
 
@@ -15,6 +17,7 @@ impl ErrorCode {
         ErrorCode(bytes)
     }
 
+    #[inline]
     pub fn class(self) -> ErrorClass {
         match self.0[0] {
             b'F' => ErrorClass::Final,
@@ -60,6 +63,17 @@ impl From<ErrorCode> for [u8; 3] {
     }
 }
 
+impl fmt::Display for ErrorCode {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f, "{}{}{}",
+            self.0[0] as char,
+            self.0[1] as char,
+            self.0[2] as char,
+        )
+    }
+}
+
 #[cfg(test)]
 mod test_error_code {
     use super::*;
@@ -70,5 +84,10 @@ mod test_error_code {
         assert_eq!(ErrorCode::T00_INTERNAL_ERROR.class(), ErrorClass::Temporary);
         assert_eq!(ErrorCode::R00_TRANSFER_TIMED_OUT.class(), ErrorClass::Relative);
         assert_eq!(ErrorCode::new(*b"???").class(), ErrorClass::Unknown);
+    }
+
+    #[test]
+    fn test_display() {
+        assert_eq!(format!("{}", ErrorCode::F00_BAD_REQUEST), "F00");
     }
 }
